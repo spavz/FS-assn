@@ -10,20 +10,33 @@ using namespace std;
 void heapify(vector<int>& a, int i, int n)
 {
     int j, temp;
+
+    //temp is the largest in the given iteration
     temp = a[i];
+
+    //j is the left child of i
     j = 2*i;
-    while (j <= n)
+    while (j <= n) // For the entire array
     {
+        // Keep the iterator j on the minimum of the two children
         if (j < n && a[j+1] > a[j])
             j = j+1;
+
+        // if the parent - child maintains the heap property
+        // which is parent > child, break out of the loop
         if (temp > a[j])
             break;
+
+        // Else keep iterating and swapping the children nodes with their parents 
+        // in a dept-first fashion until heap property is found somewhere down the tree.
         else if (temp <= a[j])
         {
             a[j/2] = a[j];
             j = 2*j;
         }
     }
+
+    // Place the temp node in the last but one position (Swap complete)
     a[j/2] = temp;
 }
 void heapsort(vector<int>& a, int n)
@@ -31,10 +44,16 @@ void heapsort(vector<int>& a, int n)
     int i, temp;
     for (i = n; i >= 2; i--)
     {
+
+        // Current Biggest node goes to its final (last) position. It is not touched thereafter.
         swap(a[i],a[1]);
+
+        //Perform heapification over unfixed remaining nodes since a random node is in the heap top.
         heapify(a, 1, i - 1);
     }
 }
+
+// Except the last level, perform heapification on all other levels since last level can have unordered leaves (Heap property)
 void build_heap(vector<int>& a, int n)
 {
     for(int i = n/2; i >= 1; i--)
